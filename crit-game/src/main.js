@@ -224,7 +224,7 @@ document.addEventListener("keydown", (e) => {
     setTimeout(() => {
       arrowPos = new Vector2(heroPos.x + 30, heroPos.y + 60);
       arrowVisible = true;
-    }, 250);
+    }, 1050);
   }
 });
 
