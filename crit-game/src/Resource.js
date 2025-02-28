@@ -7,6 +7,11 @@ class Resources {
             background: "../public/Bright/Battleground3.png",
             enemy: "../public/Swordsman/Idle.png",
             enemyHurt: "../public/Swordsman/Hurt.png",
+            critImg: "../public/crit.png",
+            att50: "../public/att50.png",
+            pressSpace: "../public/press.png",
+            gui: "../public/gui.png",
+            gui2:"../public/gui2.png",
         }
     
         this.images = {}

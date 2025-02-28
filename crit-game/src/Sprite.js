@@ -9,18 +9,19 @@ export class Sprite{
         frame,
         scale,
         position,
-        flipX = false
+        flipX = false,
+        hitbox = null
     }){
         this.resource = resource;
         this.frameSize = frameSize;
-        this.hFrames = hFrames ?? new Vector2(16,16); ;
+        this.hFrames = hFrames ?? new Vector2(16,16);
         this.vFrames = vFrames ?? 1;
         this.frame = frame ?? 0;
         this.frameMap = new Map();
         this.scale = scale ?? 1;
         this.position = position ?? new Vector2(0,0);
         this.flipX = flipX;
-
+        this.hitbox = hitbox;
         this.buildFrameMap();
     }
 
@@ -37,39 +38,39 @@ export class Sprite{
         }
     }
 
-    drawImage(ctx,x,y){
-        if(!this.resource.loaded) return;
-
-        let frameCoordx = 0;
-        let frameCoordy = 0;
-        const frame = this.frameMap.get(this.frame);
-        if(frame){
-            frameCoordx = frame.x;
-            frameCoordy = frame.y;
-        }
-
+    drawImage(ctx, x, y) {
+        if (!this.resource.loaded) return;
+        const frame = this.frameMap.get(this.frame) ?? new Vector2(0, 0);
         const frameSizeX = this.frameSize.x;
         const frameSizeY = this.frameSize.y;
-
         ctx.save();
-
-        if(this.flipX){
-            ctx.translate(x + frameSizeX * this.scale,y);
-            ctx.scale(-1,1);
-            x=0;
+        if (this.flipX) {
+            ctx.translate(x + frameSizeX * this.scale, y);
+            ctx.scale(-1, 1);
+            x = 0;
         }
-
         ctx.drawImage(
             this.resource.image,
-            frameCoordx,
-            frameCoordy,
+            frame.x,
+            frame.y,
             frameSizeX,
             frameSizeY,
             x,
             y,
             frameSizeX * this.scale,
             frameSizeY * this.scale,
-        )
+        );
         ctx.restore();
 
-}}
+        if (this.hitbox) {
+            ctx.strokeStyle = 'transparent';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(
+                x + this.hitbox.x * this.scale,
+                y + this.hitbox.y * this.scale,
+                this.hitbox.width * this.scale,
+                this.hitbox.height * this.scale
+            );
+        }
+    }
+}
